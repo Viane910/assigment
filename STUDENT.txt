@@ -1,0 +1,10 @@
+APP_URL= https://story-api.dicoding.dev/v1;
+MAP_SERVICE_API_KEY=<api_key>
+
+/* CSS HEX */
+--charcoal: #274657ff;
+--prussian-blue: #082538ff;
+--caribbean-current: #286D7Cff;
+--verdigris: #7DB3B2ff;
+--rich-black: #0E1D25ff;
+--indigo-dye: #083C58ff;
