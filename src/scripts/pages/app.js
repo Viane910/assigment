@@ -44,6 +44,15 @@ export default class App {
     });
   }
 
+  async #setupPushNotification() {
+    const pushNotificationTools = document.getElementById('push-notification-tools');
+
+    pushNotificationTools.innerHTML = generateSubscribeButtonTemplate();
+    document.getElementById('subscribe-button').addEventListener('click', () => {
+      //todo
+      });
+    }
+
   async renderPage() {
     const url = getActiveRoute();
     const page = routes[url];
@@ -57,5 +66,9 @@ export default class App {
       this.#content.innerHTML = await page.render();
       await page.afterRender();
     }
+
+    if (isServiceWorkerAvailable()) {
+      this.#setupPushNotification();
+    }
   }
-}
+ }
