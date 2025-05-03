@@ -1,11 +1,17 @@
 import HomePage from '../pages/home/home-page';
 import AboutPage from '../pages/about/about-page';
-import StoryAnitez from '../pages/story-anitez/story-anitez';
+import LoginPage from '../data/login/login';
+import RegisterPage from '../data/register/register';
+import StoryAteez from '../pages/story-ateez/story-ateez';
+import LoadStory from '../pages/load-story/load-story';
 
 const routes = {
   '/': new HomePage(),
   '/about': new AboutPage(),
-  '/story-anitez': new StoryAnitez(),
+  '/login': new LoginPage(),
+  '/register': new RegisterPage(),
+  '/story-ateez': new StoryAteez(),
+  '/load-story': new LoadStory(),
 };
 
 export default routes;

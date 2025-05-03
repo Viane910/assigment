@@ -6,13 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prettier": "prettier . --check",
+    "prettier:write": "prettier . --write"
   },
   "devDependencies": {
-    "vite": "^6.2.6"
+    "prettier": "^3.5.3",
+    "vite": "^6.2.0"
   },
   "dependencies": {
-    "@googlemaps/js-api-loader": "^1.16.8",
     "leaflet": "^1.9.4"
   }
 }

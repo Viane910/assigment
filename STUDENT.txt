@@ -1,4 +1,4 @@
-APP_URL= https://story-api.dicoding.dev/v1;
+APP_URL=<url_aplikasi>
 MAP_SERVICE_API_KEY=<api_key>
 
 /* CSS HEX */

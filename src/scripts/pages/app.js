@@ -1,16 +1,25 @@
 import routes from '../routes/routes';
+import { setupSkipToContent, isServiceWorkerAvailable } from '../utils';
+import { generateSubscribeButtonTemplate } from '../templates';
 import { getActiveRoute } from '../routes/url-parser';
 
-class App {
-  #content = null;
-  #drawerButton = null;
-  #navigationDrawer = null;
+export default class App {
+  #content;
+  #drawerButton;
+  #navigationDrawer;
+  #skipLinkButton;
 
-  constructor({ navigationDrawer, drawerButton, content }) {
+  constructor({ navigationDrawer, drawerButton, content, skipLinkButton }) {
     this.#content = content;
     this.#drawerButton = drawerButton;
     this.#navigationDrawer = navigationDrawer;
+    this.#skipLinkButton = skipLinkButton;
 
+    this.#init();
+  }
+
+  #init() {
+    setupSkipToContent(this.#skipLinkButton, this.#content);
     this.#setupDrawer();
   }
 
@@ -39,9 +48,14 @@ class App {
     const url = getActiveRoute();
     const page = routes[url];
 
-    this.#content.innerHTML = await page.render();
-    await page.afterRender();
+    if (document.startViewTransition) {
+      document.startViewTransition(async () => {
+        this.#content.innerHTML = await page.render();
+        await page.afterRender();
+      });
+    } else {
+      this.#content.innerHTML = await page.render();
+      await page.afterRender();
+    }
   }
 }
-
-export default App;
