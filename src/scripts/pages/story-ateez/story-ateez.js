@@ -5,19 +5,6 @@ export default class StoryAteez {
     return `
         <div class="form-container">
           <form id="new-form" class="new-form">
-  <div class="form-control">
-    <label for="title-input" class="new-form__title__title">Judul Cerita</label>
-
-    <div class="new-form-container">
-      <input
-        id="title-input"
-        name="title"
-        placeholder="Masukkan Judul Cerita"
-        aria-describedby="title-input-more-info"
-        required
-      >
-    </div>
-  </div>
 
   <div class="form-control">
     <label for="description-input" class="new-form__description__title">Keterangan</label>

@@ -2,7 +2,11 @@ import routes from '../routes/routes';
 import { setupSkipToContent, isServiceWorkerAvailable } from '../utils';
 import { generateSubscribeButtonTemplate, generateUnsubscribeButtonTemplate } from '../templates';
 import { getActiveRoute } from '../routes/url-parser';
-import { isCurrentPushSubscriptionAvailable, subscribe } from '../utils/notification-helper';
+import {
+  isCurrentPushSubscriptionAvailable,
+  subscribe,
+  unsubscribe,
+} from '../utils/notification-helper';
 
 export default class App {
   #content;
@@ -50,6 +54,12 @@ export default class App {
     const isSubscribed = await isCurrentPushSubscriptionAvailable();
     if (isSubscribed) {
       pushNotificationTools.innerHTML = generateUnsubscribeButtonTemplate();
+      document.getElementById('unsubscribe-button').addEventListener('click', () => {
+        unsubscribe().finally(() => {
+          this.#setupPushNotification();
+        });
+      });
+
       return;
     }
 
