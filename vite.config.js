@@ -16,9 +16,13 @@ export default defineConfig({
   },
   plugins: [
     VitePWA({
+      strategies: 'injectManifest',
       registerType: 'autoUpdate',
+      srcDir: 'dev-dist',
+      filename: 'custom-sw.js',
       devOptions: {
         enabled: true,
+        type: 'module',
       },
       includeAssets: ['favicon.svg', 'pwa-192x192.png', 'pwa-512x512.png', 'maskable-icon.png'],
       manifest: {
@@ -88,6 +92,7 @@ export default defineConfig({
             },
           },
         ],
+        // swDest: 'dev-dist/custom-sw.js',
       },
     }),
   ],

@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     skipLinkButton: document.getElementById('skip-link'),
   });
   await app.renderPage();
-  await registerServiceWorker();
+  registerServiceWorker();
 
   window.addEventListener('hashchange', async () => {
     await app.renderPage();
