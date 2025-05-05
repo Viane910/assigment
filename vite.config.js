@@ -48,7 +48,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'], // cache semua file hasil build
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com/,
@@ -70,6 +70,21 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'asset-cache',
+            },
+          },
+          {
+            urlPattern: /^https:\/\/story-api\.dicoding\.dev\/v1\/stories/,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'stories-api-cache',
+              networkTimeoutSeconds: 10,
+              expiration: {
+                maxEntries: 30,
+                maxAgeSeconds: 24 * 60 * 60,
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
             },
           },
         ],

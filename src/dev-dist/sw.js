@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-3069dcd1'], (function (workbox) { 'use strict';
+define(['./workbox-7a699bf2'], (function (workbox) { 'use strict';
 
   self.skipWaiting();
   workbox.clientsClaim();
@@ -79,7 +79,7 @@ define(['./workbox-3069dcd1'], (function (workbox) { 'use strict';
    */
   workbox.precacheAndRoute([{
     "url": "index.html",
-    "revision": "0.hnu25a3imng"
+    "revision": "0.r9bsr7gu6vo"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -100,6 +100,16 @@ define(['./workbox-3069dcd1'], (function (workbox) { 'use strict';
   }) => ["style", "script", "document"].includes(request.destination), new workbox.NetworkFirst({
     "cacheName": "asset-cache",
     plugins: []
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/story-api\.dicoding\.dev\/v1\/stories/, new workbox.NetworkFirst({
+    "cacheName": "stories-api-cache",
+    "networkTimeoutSeconds": 10,
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 30,
+      maxAgeSeconds: 86400
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
   }), 'GET');
 
 }));
