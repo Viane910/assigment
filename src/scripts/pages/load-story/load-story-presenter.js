@@ -18,7 +18,6 @@ export default class LoadStoryPresenter {
       if (response && response.listStory && response.listStory.length > 0) {
         this.currentStories = response.listStory;
         this.view.displayStories(response.listStory);
-        // await this.#dbModel.putStories(response.listStory);
         console.log('Cerita berhasil disimpan ke IndexedDB');
       } else {
         this.view.showError('Tidak ada cerita tersedia.');

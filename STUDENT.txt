@@ -8,3 +8,5 @@ MAP_SERVICE_API_KEY=<api_key>
 --verdigris: #7DB3B2ff;
 --rich-black: #0E1D25ff;
 --indigo-dye: #083C58ff;
+
+link vercel https://aztoryapps.vercel.app/#/

@@ -44,8 +44,17 @@ export default class StoryAteezPresenter {
     try {
       this.#mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
       video.srcObject = this.#mediaStream;
+      video.srcObject = this.#mediaStream;
+      video.onloadedmetadata = () => {
+        video.play();
+        console.log('Kamera berhasil dimulai');
+      };
+      console.log('Elemen video:', video);
+      console.log('MediaStream:', this.#mediaStream);
     } catch (err) {
-      alert('Kamera tidak tersedia: ' + err.message);
+      console.error('Kamera tidak tersedia:', err.message);
+      alert('Kamera tidak tersedia. Silakan unggah foto secara manual.');
+      document.getElementById('fileInput').style.display = 'block';
     }
 
     window.requestAnimationFrame(() => {

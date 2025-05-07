@@ -26,7 +26,7 @@ export default class StoryAteez {
         <input type="file" accept="image/*" id="fileInput" />
       
         <div class="camera-section">
-            <video id="video" autoplay></video>
+            <video id="video" autoplay autoplay></video>
               <button id="captureBtn">Capture</button>
               <button id="stopCam" type="button">Stop Kamera</button>
               <canvas id="canvas" hidden></canvas>
@@ -58,6 +58,7 @@ export default class StoryAteez {
 
   async afterRender() {
     const presenter = new StoryAteezPresenter();
+    await new Promise((resolve) => requestAnimationFrame(resolve));
     await presenter.init();
   }
 }
