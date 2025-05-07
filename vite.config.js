@@ -3,6 +3,7 @@ import { resolve } from 'path';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: './', // Tambahkan base path
   root: resolve(__dirname, 'src'),
   publicDir: resolve(__dirname, 'src', 'public'),
   build: {
@@ -18,13 +19,27 @@ export default defineConfig({
     VitePWA({
       strategies: 'injectManifest',
       registerType: 'autoUpdate',
+      injectRegister: 'auto',
       srcDir: 'dev-dist',
-      filename: 'custom-sw.js',
+      filename: 'sw.js',
       devOptions: {
         enabled: true,
         type: 'module',
       },
-      includeAssets: ['favicon.svg', 'pwa-192x192.png', 'pwa-512x512.png', 'maskable-icon.png'],
+      includeAssets: [
+        'favicon.svg',
+        'pwa-192x192.png',
+        'pwa-512x512.png',
+        'maskable-icon.png',
+        'png.png',
+        'images/*.{jpeg,jpg,png,svg,webp}',
+        'content/*.{jpeg,jpg,png,svg,webp}',
+      ],
+      injectManifest: {
+        swSrc: './src/sw.js',
+        swDest: 'dist/sw.js',
+        globDirectory: 'dist',
+      },
       manifest: {
         name: 'ATZstory App',
         short_name: 'ATZstory',
@@ -47,12 +62,14 @@ export default defineConfig({
             src: '/maskable-icon.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'maskable',
+            purpose: 'maskable any',
           },
         ],
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        cleanupOutdatedCaches: true,
+        sourcemap: true,
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com/,
@@ -92,7 +109,7 @@ export default defineConfig({
             },
           },
         ],
-        // swDest: 'dev-dist/custom-sw.js',
+        base: './',
       },
     }),
   ],

@@ -10,6 +10,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import { precacheAndRoute } from 'workbox-precaching';
 
 // If the loader is already loaded, just stop.
 if (!self.define) {
@@ -133,12 +134,21 @@ define(['./workbox-7a699bf2'], function (workbox) {
     }),
     'GET',
   );
+
+  workbox.routing.registerRoute(
+    new RegExp('https://story-api.dicoding.dev/v1/stories'),
+    new workbox.strategies.NetworkFirst({
+      cacheName: 'stories-api-cache',
+      plugins: [
+        new workbox.expiration.ExpirationPlugin({
+          maxEntries: 50,
+          maxAgeSeconds: 24 * 60 * 60,
+        }),
+      ],
+    }),
+  );
 });
 
-import { precacheAndRoute } from 'workbox-precaching';
-precacheAndRoute(self.__WB_MANIFEST);
-
-// Handler push notification
 self.addEventListener('push', (event) => {
   let payload = {
     title: 'Notifikasi Baru!',
@@ -152,8 +162,10 @@ self.addEventListener('push', (event) => {
       payload = event.data.json();
     }
   } catch (e) {
-    payload.options.body = event.data.text(); // fallback
+    payload.options.body = event.data.text();
   }
 
   event.waitUntil(self.registration.showNotification(payload.title, payload.options));
 });
+
+precacheAndRoute(self.__WB_MANIFEST);

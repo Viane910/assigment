@@ -29,7 +29,19 @@ export default class StoryAteezPage {
 
   async afterRender() {
     await this.initialMap();
-    this.presenter.init();
+    await this.presenter.init();
+
+    document.addEventListener('click', async (e) => {
+      if (e.target.classList.contains('save-btn')) {
+        const id = e.target.dataset.id;
+        const stories = await this.presenter.getCurrentStories(); // kamu buat method ini
+        const selectedStory = stories.find((story) => story.id === id);
+        if (selectedStory) {
+          await this.presenter.saveStory(selectedStory);
+          alert('Cerita disimpan!');
+        }
+      }
+    });
   }
 
   displayStories(stories) {

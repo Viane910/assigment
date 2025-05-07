@@ -164,8 +164,8 @@ export async function subscribePushNotification({ endpoint, keys: { p256dh, auth
     },
     body: data,
   });
-  const json = await fetchResponse.json();
 
+  const json = await fetchResponse.json();
   return {
     ...json,
     ok: fetchResponse.ok,
