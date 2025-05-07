@@ -26,6 +26,7 @@ export default class App {
   #init() {
     setupSkipToContent(this.#skipLinkButton, this.#content);
     this.#setupDrawer();
+    this.#setupDropdown();
   }
 
   #setupDrawer() {
@@ -45,6 +46,35 @@ export default class App {
         if (link.contains(event.target)) {
           this.#navigationDrawer.classList.remove('open');
         }
+      });
+    });
+  }
+
+  #setupDropdown() {
+    const dropdown = document.querySelector('.dropdown');
+    if (!dropdown) {
+      console.warn('Dropdown element not found');
+      return;
+    }
+
+    const toggle = dropdown.querySelector('.dropdown-toggle');
+    if (!toggle) {
+      console.warn('Toggle button not found');
+      return;
+    }
+
+    toggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      dropdown.classList.toggle('open');
+    });
+
+    document.addEventListener('click', () => {
+      dropdown.classList.remove('open');
+    });
+
+    dropdown.querySelectorAll('.dropdown-menu a').forEach((link) => {
+      link.addEventListener('click', () => {
+        dropdown.classList.remove('open');
       });
     });
   }
@@ -83,6 +113,7 @@ export default class App {
     } else {
       this.#content.innerHTML = await page.render();
       await page.afterRender();
+      this.#setupDropdown();
     }
 
     if (isServiceWorkerAvailable()) {

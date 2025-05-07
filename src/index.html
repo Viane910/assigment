@@ -19,15 +19,19 @@
     <header>
       <div class="main-header container">
         <a class="brand-name" href="#/">ATZtory</a>
-
         <nav id="navigation-drawer" class="navigation-drawer">
           <ul id="nav-list" class="nav-list">
             <div id="push-notification-tools"></div>
             <li><a href="#/">Home</a></li>
             <li><a href="#/about">About</a></li>
             <li><a href="#/story-ateez">Form Anitez</a></li>
-            <li><a href="#/load-story">Story</a></li>
-            <li><a href="#/simpan-story">Simpan Story</a></li>
+            <li class="dropdown">
+              <button class="dropdown-toggle">Story ▼</button>
+              <ul class="dropdown-menu">
+                <li><a href="#/load-story">Load Story</a></li>
+                <li><a href="#/simpan-story">Simpan Story</a></li>
+              </ul>
+            </li>
             <li>
               <a href="#/login">
                 <img src="/png.png" alt="person" class="person" />
@@ -35,7 +39,6 @@
             </li>
           </ul>
         </nav>
-
         <button id="drawer-button" class="drawer-button">☰</button>
       </div>
     </header>
