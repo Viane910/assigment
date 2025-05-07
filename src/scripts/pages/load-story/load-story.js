@@ -1,6 +1,5 @@
 import LoadStoryPresenter from './load-story-presenter';
 import Map from '../../utils/map';
-import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 export default class StoryAteezPage {
@@ -34,7 +33,7 @@ export default class StoryAteezPage {
     document.addEventListener('click', async (e) => {
       if (e.target.classList.contains('save-btn')) {
         const id = e.target.dataset.id;
-        const stories = await this.presenter.getCurrentStories(); // kamu buat method ini
+        const stories = await this.presenter.getCurrentStories();
         const selectedStory = stories.find((story) => story.id === id);
         if (selectedStory) {
           await this.presenter.saveStory(selectedStory);
@@ -55,14 +54,18 @@ export default class StoryAteezPage {
       .map((story) => {
         const photoUrl = story.photoUrl || 'default-image.jpg';
         return `
-          <div class="story-item">
-            <h3>${story.name}</h3>
-            <img src="${photoUrl}" alt="Foto ${story.name}" 
-                 onerror="this.onerror=null;this.src='default-image.jpg';" />
-            <p>${story.description}</p>
-            <small>Lokasi: ${story.lat || '-'}, ${story.lon || '-'}</small>
-          </div>
-        `;
+        <div class="story-item">
+          <h3>${story.name}</h3>
+          <img 
+            src="${photoUrl}" 
+            alt="Foto ${story.name}" 
+            onerror="this.onerror=null;this.src='default-image.jpg';"
+          />
+          <p>${story.description}</p>
+          <p>${story.lat} , ${story.lon}</p>
+          <button class="save-btn" data-id="${story.id}">Simpan cerita</button>
+        </div>
+      `;
       })
       .join('');
 

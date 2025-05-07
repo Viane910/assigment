@@ -25,16 +25,22 @@ export default class SimpanStory {
   displayStories(stories) {
     const container = document.getElementById('saved-stories');
     container.innerHTML = stories
-      .map(
-        (story) => `
-      <div class="story-item">
-        <h3>${story.name}</h3>
-        <img src="${photoUrl}" alt="Foto ${story.name}"
-        <p>${story.description}</p>
-        <button class="delete-btn" data-id="${story.id}">Hapus</button>
-      </div>
-    `,
-      )
+      .map((story) => {
+        const photoUrl = story.photoUrl || 'default-image.jpg';
+        return `
+          <div class="story-item">
+            <h3>${story.name}</h3>
+            <img 
+              src="${photoUrl}" 
+              alt="Foto ${story.name}" 
+              onerror="this.onerror=null;this.src='default-image.jpg';"
+            />
+            <p>${story.description}</p>
+            <p>${story.lat} , ${story.lon}</p>
+            <button class="delete-btn" data-id="${story.id}">Hapus</button>
+          </div>
+        `;
+      })
       .join('');
   }
 
