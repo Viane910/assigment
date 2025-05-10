@@ -1,4 +1,5 @@
 import StoryAteezPresenter from './story-ateez-presenter';
+import 'leaflet/dist/leaflet.css';
 
 export default class StoryAteez {
   async render() {

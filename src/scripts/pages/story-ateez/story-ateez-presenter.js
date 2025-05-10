@@ -1,4 +1,6 @@
 import * as DataAPI from '../../data/api';
+import Map from '../../utils/map';
+import 'leaflet/dist/leaflet.css';
 
 const imageModel = {
   imageBlob: null,
