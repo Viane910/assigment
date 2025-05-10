@@ -80,6 +80,7 @@ export default class StoryAteezPage {
   }
 
   async initialMap() {
+    await new Promise((resolve) => setTimeout(resolve, 100));
     this.#map = await Map.build('#map', {
       zoom: 10,
       locate: true,

@@ -2,6 +2,7 @@
 import '../styles/styles.css';
 import './components/data-ateez.js';
 import 'leaflet/dist/leaflet.css';
+import L from 'leaflet';
 
 import App from './pages/app';
 import { registerServiceWorker } from './utils';

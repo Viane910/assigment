@@ -16,14 +16,11 @@ export default defineConfig({
   },
   plugins: [
     VitePWA({
-      strategies: 'injectManifest',
+      strategies: 'generateSW',
       registerType: 'autoUpdate',
       injectRegister: 'auto',
-      srcDir: 'dev-dist',
-      filename: 'sw.js',
       devOptions: {
         enabled: true,
-        type: 'module',
       },
       includeAssets: [
         'favicon.svg',
@@ -34,11 +31,6 @@ export default defineConfig({
         'images/*.{jpeg,jpg,png,svg,webp}',
         'content/*.{jpeg,jpg,png,svg,webp}',
       ],
-      injectManifest: {
-        swSrc: './src/sw.js',
-        swDest: 'dist/sw.js',
-        globDirectory: 'dist',
-      },
       manifest: {
         name: 'ATZstory App',
         short_name: 'ATZstory',
@@ -69,6 +61,7 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
         cleanupOutdatedCaches: true,
         sourcemap: true,
+        importScripts: ['custom-sw.js'],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com/,

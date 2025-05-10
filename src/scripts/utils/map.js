@@ -47,7 +47,8 @@ export default class Map {
       if (!('content' in popupOptions)) {
         throw new Error('popupOptions must include `content` property.');
       }
-      const newPopup = popup(coordinates, popupOptions);
+      // const newPopup = popup(coordinates, popupOptions);
+      const newPopup = popup(popupOptions).setLatLng(coordinates);
       newMarker.bindPopup(newPopup);
     }
     newMarker.addTo(this.#map);

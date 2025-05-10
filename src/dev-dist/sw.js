@@ -10,7 +10,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { precacheAndRoute } from 'workbox-precaching';
 
 // If the loader is already loaded, just stop.
 if (!self.define) {
@@ -21,21 +20,23 @@ if (!self.define) {
   let nextDefineUri;
 
   const singleRequire = (uri, parentUri) => {
-    uri = new URL(uri + '.js', parentUri).href;
-    return (
-      registry[uri] ||
-      new Promise((resolve) => {
-        if ('document' in self) {
-          const script = document.createElement('script');
-          script.src = uri;
-          script.onload = resolve;
-          document.head.appendChild(script);
-        } else {
-          nextDefineUri = uri;
-          importScripts(uri);
-          resolve();
-        }
-      }).then(() => {
+    uri = new URL(uri + ".js", parentUri).href;
+    return registry[uri] || (
+      
+        new Promise(resolve => {
+          if ("document" in self) {
+            const script = document.createElement("script");
+            script.src = uri;
+            script.onload = resolve;
+            document.head.appendChild(script);
+          } else {
+            nextDefineUri = uri;
+            importScripts(uri);
+            resolve();
+          }
+        })
+      
+      .then(() => {
         let promise = registry[uri];
         if (!promise) {
           throw new Error(`Module ${uri} didn’t register its module`);
@@ -46,30 +47,29 @@ if (!self.define) {
   };
 
   self.define = (depsNames, factory) => {
-    const uri =
-      nextDefineUri || ('document' in self ? document.currentScript.src : '') || location.href;
+    const uri = nextDefineUri || ("document" in self ? document.currentScript.src : "") || location.href;
     if (registry[uri]) {
       // Module is already loading or loaded.
       return;
     }
     let exports = {};
-    const require = (depUri) => singleRequire(depUri, uri);
+    const require = depUri => singleRequire(depUri, uri);
     const specialDeps = {
       module: { uri },
       exports,
-      require,
+      require
     };
-    registry[uri] = Promise.all(
-      depsNames.map((depName) => specialDeps[depName] || require(depName)),
-    ).then((deps) => {
+    registry[uri] = Promise.all(depsNames.map(
+      depName => specialDeps[depName] || require(depName)
+    )).then(deps => {
       factory(...deps);
       return exports;
     });
   };
 }
-define(['./workbox-7a699bf2'], function (workbox) {
-  'use strict';
+define(['./workbox-7a699bf2'], (function (workbox) { 'use strict';
 
+  importScripts("custom-sw.js");
   self.skipWaiting();
   workbox.clientsClaim();
 
@@ -78,94 +78,40 @@ define(['./workbox-7a699bf2'], function (workbox) {
    * requests for URLs in the manifest.
    * See https://goo.gl/S9QRab
    */
-  workbox.precacheAndRoute(
-    [
-      {
-        url: 'index.html',
-        revision: '0.4ek7vj606v',
-      },
-    ],
-    {},
-  );
+  workbox.precacheAndRoute([{
+    "url": "index.html",
+    "revision": "0.8b4on6va46g"
+  }], {});
   workbox.cleanupOutdatedCaches();
-  workbox.registerRoute(
-    new workbox.NavigationRoute(workbox.createHandlerBoundToURL('index.html'), {
-      allowlist: [/^\/$/],
-    }),
-  );
-  workbox.registerRoute(
-    /^https:\/\/fonts\.(googleapis|gstatic)\.com/,
-    new workbox.CacheFirst({
-      cacheName: 'google-fonts',
-      plugins: [],
-    }),
-    'GET',
-  );
-  workbox.registerRoute(
-    ({ request }) => request.destination === 'image',
-    new workbox.StaleWhileRevalidate({
-      cacheName: 'image-cache',
-      plugins: [],
-    }),
-    'GET',
-  );
-  workbox.registerRoute(
-    ({ request }) => ['style', 'script', 'document'].includes(request.destination),
-    new workbox.NetworkFirst({
-      cacheName: 'asset-cache',
-      plugins: [],
-    }),
-    'GET',
-  );
-  workbox.registerRoute(
-    /^https:\/\/story-api\.dicoding\.dev\/v1\/stories/,
-    new workbox.NetworkFirst({
-      cacheName: 'stories-api-cache',
-      networkTimeoutSeconds: 10,
-      plugins: [
-        new workbox.ExpirationPlugin({
-          maxEntries: 30,
-          maxAgeSeconds: 86400,
-        }),
-        new workbox.CacheableResponsePlugin({
-          statuses: [0, 200],
-        }),
-      ],
-    }),
-    'GET',
-  );
+  workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
+    allowlist: [/^\/$/]
+  }));
+  workbox.registerRoute(/^https:\/\/fonts\.(googleapis|gstatic)\.com/, new workbox.CacheFirst({
+    "cacheName": "google-fonts",
+    plugins: []
+  }), 'GET');
+  workbox.registerRoute(({
+    request
+  }) => request.destination === "image", new workbox.StaleWhileRevalidate({
+    "cacheName": "image-cache",
+    plugins: []
+  }), 'GET');
+  workbox.registerRoute(({
+    request
+  }) => ["style", "script", "document"].includes(request.destination), new workbox.NetworkFirst({
+    "cacheName": "asset-cache",
+    plugins: []
+  }), 'GET');
+  workbox.registerRoute(/^https:\/\/story-api\.dicoding\.dev\/v1\/stories/, new workbox.NetworkFirst({
+    "cacheName": "stories-api-cache",
+    "networkTimeoutSeconds": 10,
+    plugins: [new workbox.ExpirationPlugin({
+      maxEntries: 30,
+      maxAgeSeconds: 86400
+    }), new workbox.CacheableResponsePlugin({
+      statuses: [0, 200]
+    })]
+  }), 'GET');
 
-  workbox.routing.registerRoute(
-    new RegExp('https://story-api.dicoding.dev/v1/stories'),
-    new workbox.strategies.NetworkFirst({
-      cacheName: 'stories-api-cache',
-      plugins: [
-        new workbox.expiration.ExpirationPlugin({
-          maxEntries: 50,
-          maxAgeSeconds: 24 * 60 * 60,
-        }),
-      ],
-    }),
-  );
-});
-
-self.addEventListener('push', (event) => {
-  let payload = {
-    title: 'Notifikasi Baru!',
-    options: {
-      body: 'Ada notifikasi baru dari ATZstory.',
-    },
-  };
-
-  try {
-    if (event.data) {
-      payload = event.data.json();
-    }
-  } catch (e) {
-    payload.options.body = event.data.text();
-  }
-
-  event.waitUntil(self.registration.showNotification(payload.title, payload.options));
-});
-
-precacheAndRoute(self.__WB_MANIFEST);
+}));
+//# sourceMappingURL=sw.js.map
